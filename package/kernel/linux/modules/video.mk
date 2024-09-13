@@ -106,7 +106,8 @@ define KernelPackage/fb
 	CONFIG_VT_CONSOLE=y \
 	CONFIG_VT_HW_CONSOLE_BINDING=y
   FILES:=$(LINUX_DIR)/drivers/video/fbdev/core/fb.ko \
-	$(LINUX_DIR)/lib/fonts/font.ko
+	$(LINUX_DIR)/lib/fonts/font.ko \
+	$(LINUX_DIR)/drivers/video/fbdev/core/fb_io_fops.ko@ge6.6
   AUTOLOAD:=$(call AutoLoad,06,fb font)
 endef
 
@@ -777,6 +778,21 @@ define KernelPackage/video-gspca-pac207/description
 endef
 
 $(eval $(call KernelPackage,video-gspca-pac207))
+
+
+define KernelPackage/video-gspca-pac7302
+  TITLE:=pac7302 webcam support
+  KCONFIG:=CONFIG_USB_GSPCA_PAC7302
+  FILES:=$(LINUX_DIR)/drivers/media/$(V4L2_USB_DIR)/gspca/gspca_pac7302.ko
+  AUTOLOAD:=$(call AutoProbe,gspca_pac7302)
+  $(call AddDepends/camera-gspca)
+endef
+
+define KernelPackage/video-gspca-pac7302/description
+ The Pixart PAC7302 USB Camera Driver (pac7302) kernel module
+endef
+
+$(eval $(call KernelPackage,video-gspca-pac7302))
 
 
 define KernelPackage/video-gspca-pac7311
